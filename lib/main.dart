@@ -1,14 +1,14 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'models/transaction.dart';
+import 'widgets/chart.dart';
 import 'widgets/new_transaction.dart';
 import 'widgets/transactionList.dart';
 
 void main() => runApp(ExpenseCalculator());
 
-  class ExpenseCalculator extends StatelessWidget {
+class ExpenseCalculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,11 +34,22 @@ class ExpenseCalculatorApp extends StatefulWidget {
 }
 
 class _ExpenseCalculatorAppState extends State<ExpenseCalculatorApp> {
-   final List<Transaction> transactions = [
-    Transaction(id: '1', price: 999, name: "Shoes", date: DateTime.now()),
-    Transaction(id: '2', price: 499, name: "T-Shirt", date: DateTime.now()),
+  final List<Transaction> transactions = [
+    // Transaction(id: '1', price: 999, name: "Shoes", date: DateTime.now()),
+    // Transaction(id: '2', price: 499, name: "T-Shirt", date: DateTime.now()),
   ];
-   _addTransaction(String transName, double transPrice) {
+
+  List<Transaction> get _weeklyTransaction {
+    return transactions.where((trans) {
+      return trans.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7), 
+        ),
+      );
+    }).toList();
+  }
+
+  _addTransaction(String transName, double transPrice) {
     final newTransaction = Transaction(
         date: DateTime.now(),
         id: DateTime.now().toString(),
@@ -48,28 +59,29 @@ class _ExpenseCalculatorAppState extends State<ExpenseCalculatorApp> {
       transactions.add(newTransaction);
     });
     Navigator.of(context).pop();
-   }
-
+  }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: _returnHeader(context),
-        body: _returnBody(),
-          floatingActionButtonLocation :FloatingActionButtonLocation.centerDocked, 
-          floatingActionButton : FloatingActionButton(
-            child : Icon(Icons.add),
-            onPressed: () => showNewTransactionModal(context)),
+    return Scaffold(
+      appBar: _returnHeader(context),
+      body: _returnBody(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => showNewTransactionModal(context)),
     );
   }
-  
+
   _returnHeader(BuildContext ctx) {
     return AppBar(
       title: Text(
         'Expense Calculator',
       ),
       actions: <Widget>[
-        IconButton(onPressed: () => showNewTransactionModal(ctx), icon: const Icon(Icons.add)),
+        IconButton(
+            onPressed: () => showNewTransactionModal(ctx),
+            icon: const Icon(Icons.add)),
       ],
     );
   }
@@ -78,20 +90,13 @@ class _ExpenseCalculatorAppState extends State<ExpenseCalculatorApp> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Card(
-            child: Container(
-              width: double.infinity,
-              child: Text('Chart'),
-            ),
-            elevation: 5,
-          ),
+          Chart(_weeklyTransaction),
           TransactionList(transactions),
         ]);
-         
   }
 
-  showNewTransactionModal(BuildContext ctx){
-     showModalBottomSheet(
+  showNewTransactionModal(BuildContext ctx) {
+    showModalBottomSheet(
       context: ctx,
       builder: (_) {
         return GestureDetector(

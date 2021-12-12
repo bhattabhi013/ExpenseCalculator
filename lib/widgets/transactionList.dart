@@ -1,7 +1,6 @@
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
 
-
 import 'package:flutter/material.dart';
 
 class TransactionList extends StatelessWidget {
@@ -9,11 +8,22 @@ class TransactionList extends StatelessWidget {
   TransactionList(this.transactions);
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       height: 400,
-      child: ListView.builder(
-              itemBuilder: (context, index) { 
-                 return Card(
+      child: transactions.isEmpty
+          ? Column(
+              children: [
+                Text('Transaction list empty'),
+                Container(
+                  height: 200,
+                  child: Image.asset('assets/Images/logo.png',
+                  fit: BoxFit.cover),
+                ),
+              ],
+            )
+          : ListView.builder(
+              itemBuilder: (context, index) {
+                return Card(
                     elevation: 5,
                     child: Row(
                       children: <Widget>[
@@ -59,9 +69,9 @@ class TransactionList extends StatelessWidget {
                           ],
                         ),
                       ],
-                    )); 
-               },
-               itemCount: transactions.length,
+                    ));
+              },
+              itemCount: transactions.length,
             ),
     );
   }
