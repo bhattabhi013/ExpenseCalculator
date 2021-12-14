@@ -17,6 +17,11 @@ class ExpenseCalculator extends StatelessWidget {
         brightness: Brightness.light,
         primarySwatch: Colors.purple,
         accentColor: Colors.yellow,
+        textTheme: ThemeData.light().textTheme.copyWith(
+          button : TextStyle(
+            color: Colors.white
+          ),
+        )
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -35,8 +40,8 @@ class ExpenseCalculatorApp extends StatefulWidget {
 
 class _ExpenseCalculatorAppState extends State<ExpenseCalculatorApp> {
   final List<Transaction> transactions = [
-    // Transaction(id: '1', price: 999, name: "Shoes", date: DateTime.now()),
-    // Transaction(id: '2', price: 499, name: "T-Shirt", date: DateTime.now()),
+    Transaction(id: '1', price: 999, name: "Shoes", date: DateTime.now()),
+    Transaction(id: '2', price: 499, name: "T-Shirt", date: DateTime.now()),
   ];
 
   List<Transaction> get _weeklyTransaction {
@@ -49,9 +54,9 @@ class _ExpenseCalculatorAppState extends State<ExpenseCalculatorApp> {
     }).toList();
   }
 
-  _addTransaction(String transName, double transPrice) {
+  _addTransaction(String transName, double transPrice, DateTime date) {
     final newTransaction = Transaction(
-        date: DateTime.now(),
+        date: date,
         id: DateTime.now().toString(),
         name: transName,
         price: transPrice);
@@ -60,7 +65,11 @@ class _ExpenseCalculatorAppState extends State<ExpenseCalculatorApp> {
     });
     Navigator.of(context).pop();
   }
-
+  deleteTransaction(String id){
+    setState(() {
+      transactions.removeWhere((element) => element.id == id);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +100,7 @@ class _ExpenseCalculatorAppState extends State<ExpenseCalculatorApp> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Chart(_weeklyTransaction),
-          TransactionList(transactions),
+          TransactionList(transactions,deleteTransaction),
         ]);
   }
 
