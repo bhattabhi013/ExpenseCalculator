@@ -10,13 +10,13 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+       height: MediaQuery.of(context).size.height * 0.6,
       child: transactions.isEmpty
           ? Column(
               children: [
                 Text('Transaction list empty'),
                 Container(
-                  height: 200,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   child:
                       Image.asset('assets/Images/logo.png', fit: BoxFit.cover),
                 ),

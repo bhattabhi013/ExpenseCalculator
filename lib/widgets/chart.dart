@@ -29,23 +29,26 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: groupedTransaction.map((res){
-            // return Text('name is ${res.name} and price: ${res.price.toString()}');
-            return Flexible(
-              // helps in sizing and segmenting of rows and columns.
-              fit: FlexFit.tight,
-              child:  ChartBar(
-              spendingAmount:  getMaxSpent == 0.0 ? 0.0 :(res['price'] as double), 
-              percentSpent:  getMaxSpent == 0.0 ? 0.0 : (res['price'] as double) / getMaxSpent, 
-              weekDay: res['day'].toString()
-              ),
-            );           
-         }).toList(),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.25,
+      child: Card(
+        elevation: 5,
+        margin: const EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: groupedTransaction.map((res){
+              // return Text('name is ${res.name} and price: ${res.price.toString()}');
+              return Flexible(
+                // helps in sizing and segmenting of rows and columns.
+                fit: FlexFit.tight,
+                child:  ChartBar(
+                spendingAmount:  getMaxSpent == 0.0 ? 0.0 :(res['price'] as double), 
+                percentSpent:  getMaxSpent == 0.0 ? 0.0 : (res['price'] as double) / getMaxSpent, 
+                weekDay: res['day'].toString()
+                ),
+              );           
+           }).toList(),
+        ),
       ),
     );
   }
