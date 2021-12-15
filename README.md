@@ -1,8 +1,8 @@
-# expense_calculator
-
-A new Flutter project.
+# Expense Calculator App
+  keep a monitor on your weekly expenses.
 
 ## Getting Started
+
 
 This project is a starting point for a Flutter application.
 
